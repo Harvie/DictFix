@@ -16,18 +16,20 @@ awk '{
 	gsub(/\//, "\\/");
 	orig=$1;
 	nodia=$1;
+	pre="\\([^'"$substchar$diachars"'a-Z]\\|^\\)"
+	pos="\\([^'"$substchar$diachars"'a-Z]\\|$\\)"
 	gsub(/['"$diachars"']/, "'"$substchar"'", nodia);
-	print "s/" nodia "/" orig "/g;";
+	print "s/" pre nodia pos "/\\1" orig "\\2/g;";
 
 	#Prvni velkym
 	sub(/^./, substr(toupper(nodia),1,1), nodia);
 	sub(/^./, substr(toupper(orig),1,1), orig);
-	print "s/" nodia "/" orig "/g;";
+	print "s/" pre nodia pos "/\\1" orig "\\2/g;";
 
 	#Vsechny velkejma
 	nodia=toupper(nodia);
 	orig=toupper(orig);
-	print "s/" nodia "/" orig "/g;";
+	print "s/" pre nodia pos "/\\1" orig "\\2/g;";
 }';
 
 
